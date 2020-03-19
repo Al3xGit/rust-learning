@@ -1,6 +1,29 @@
-fn main() {
+use std::io::Write;
+use std::str::FromStr;
 
-    println!("Calcul du GCD de 45 et 30 : {}", gcd(45, 30));
+fn main() {
+    let mut nombres = Vec::new();
+
+    for arg in std::env::args().skip(1) {
+        nombres.push(u64::from_str(&arg)
+            .expect("Erreur d'analyse des paramètres"));
+    }
+
+    if nombres.len() == 0 {
+        writeln!(std::io::stderr(), "Usage : gcd NOMBRE ...").unwrap();
+        std::process::exit(1);
+    }
+
+    let mut d = nombres[0];
+
+    for m in &nombres[1..] {
+        d = gcd(d, *m);
+    }
+
+    println!("Le plus grand commun diviseur de {:?} est {}",
+        nombres, d);
+
+
 
 }
 
